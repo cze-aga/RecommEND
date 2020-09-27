@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,7 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using REcommEND.Data;
+using REcommEND.Data.Mappings;
 using REcommEND.Services;
+using REcommEND.Services.Configuration;
+using REcommEND.Services.IMDBApi;
+using System;
 using System.Threading.Tasks;
 
 namespace REcommEND
@@ -22,8 +27,9 @@ namespace REcommEND
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Populate);
 
             /*The registration of UserService as a singleton object that’ll be automatically available for injection throughout the project;
 The Cors policy previously mentioned. Here, you’re just allowing any method, origin, header and credentials that arrive at the house
@@ -32,7 +38,17 @@ The Cors policy previously mentioned. Here, you’re just allowing any method, ori
             services.AddDbContext<RecommendationsDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<UserService>();
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new IMDBMoviesMapperProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddSingleton<IIMDBApiClient, IMDBApiClient>();
             services.AddCors(o => o.AddPolicy("ReactPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -40,8 +56,9 @@ The Cors policy previously mentioned. Here, you’re just allowing any method, ori
                        .AllowAnyHeader()
                        /*.AllowCredentials()*/;
             }));
+            services.AddTransient<UserService>();
 
-           
+
 
             services.AddSwaggerGen(options =>
             {
@@ -52,6 +69,20 @@ The Cors policy previously mentioned. Here, you’re just allowing any method, ori
                     Description = "Sample service for Learner",
                 });
             });
+
+
+            // Setup options with DI
+            services.AddOptions();
+
+            // Configure MyOptions using config by installing Microsoft.Extensions.Options.ConfigurationExtensions
+            services.Configure<IMDBConfigurationOptions>(Configuration);
+            
+            // Configure MyOptions using code
+            services.Configure<IMDBConfigurationOptions>(myOptions =>
+            {
+                myOptions.apiKey = Environment.GetEnvironmentVariable("IMDBAPIKEY", EnvironmentVariableTarget.User);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

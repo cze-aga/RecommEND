@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using REcommEND.Models;
 using REcommEND.Services;
+using REcommEND.Services.IMDBApi;
 
 namespace REcommEND.Controllers
 {
@@ -17,15 +18,20 @@ namespace REcommEND.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService userService;
-        public UsersController(UserService userService)
+        private readonly IIMDBApiClient imdbApiClient;
+
+        public UsersController(UserService userService, IIMDBApiClient imdbApiClient)
         {
             this.userService = userService;
+            this.imdbApiClient = imdbApiClient;
         }
         // GET api/users
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            return userService.GetAll();
+            imdbApiClient.GetMovies();
+
+             return userService.GetAll();
         }
         // GET api/users/5
         [HttpGet("{id}")]

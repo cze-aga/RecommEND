@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REcommEND", "REcommEND.csproj", "{D3553483-B8A8-4A9F-9988-74588708C16B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "REcommEND", "REcommEND.csproj", "{D3553483-B8A8-4A9F-9988-74588708C16B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REcommEND.Tests", "..\REcommEND.Tests\REcommEND.Tests.csproj", "{3C57C9CA-B170-4F0E-BF35-90C3574D0D38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D3553483-B8A8-4A9F-9988-74588708C16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3553483-B8A8-4A9F-9988-74588708C16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3553483-B8A8-4A9F-9988-74588708C16B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C57C9CA-B170-4F0E-BF35-90C3574D0D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C57C9CA-B170-4F0E-BF35-90C3574D0D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C57C9CA-B170-4F0E-BF35-90C3574D0D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C57C9CA-B170-4F0E-BF35-90C3574D0D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
